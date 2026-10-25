@@ -284,11 +284,11 @@ function report(){
   const prio=[...weak,...rest].slice(0,2).map(i=>PILLARS[i]);
   const href=CONFIG.agenda;
   document.body.classList.add('soft');
-  const NOTE={low:'Há pontos importantes pedindo atenção agora.',mid:'Você já tem uma base, mas ainda há partes soltas no dia a dia.',high:'Seu negócio está bem organizado, com poucos pontos a refinar.'};
+  const NOTE={low:'Há pontos importantes pedindo atenção agora.',mid:'Você já tem uma base, mas ainda há partes soltas no dia a dia.',high:'Seu negócio está bem estruturado, com poucos pontos a refinar.'};
   app.innerHTML = `
     <p class="eyebrow">Seu diagnóstico</p>
     <h1>${esc(first)}, aqui está o retrato do seu negócio</h1>
-    <div class="score"><span class="score-label">Sua nota geral de organização</span><b class="lv-${level(total)}">${total}%</b><span class="tag lv-${level(total)}">${LV[level(total)]}</span><span class="muted score-note">Vai de 0 a 100%: quanto mais perto de 100%, mais organizado está o seu negócio. ${NOTE[level(total)]}</span></div>
+    <div class="score"><span class="score-label">Nota geral do seu negócio</span><b class="lv-${level(total)}">${total}%</b><span class="tag lv-${level(total)}">${LV[level(total)]}</span><span class="muted score-note">Vai de 0 a 100%: quanto mais perto de 100%, mais forte e estruturado está o seu negócio. ${NOTE[level(total)]}</span></div>
     <div class="card">${radar(sc)}</div>
     <div>
       <h2>Pilar por pilar</h2>
