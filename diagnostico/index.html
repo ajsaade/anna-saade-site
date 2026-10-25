@@ -1,0 +1,302 @@
+<title>Diagnóstico Anna Saade</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* Brandbook Anna Saade v2.0: fundo pêssego, terracota como destaque, grafite nos textos, Poppins + Nunito, ícones Lucide em círculo pêssego.
+   Layout: coluna única centralizada, uma tela por vez. Visual claro por decisão da marca (sem tema escuro). */
+:root{
+  color-scheme:light;
+  --peach:#FDF1E7; --peach-mid:#FBE4D3; --soft:#FBF1E6; --sage:#EBEADB;
+  --terracota:#C3703F; --terracota-strong:#AE5C2B; --graphite:#3A352F; --brown:#6B6259; --white:#FFFFFF;
+  --line:#EBD5C3;
+  --low:#A8452B; --mid:#B7791F; --high:#5E7F5B;
+  --font-display:'Poppins',system-ui,sans-serif;
+  --font-body:'Nunito',system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html{background:var(--peach)}
+body{background:linear-gradient(180deg,var(--peach) 0%,var(--peach-mid) 100%) fixed;color:var(--graphite);font-family:var(--font-body);font-size:17px;line-height:1.6;padding-inline:20px;padding-block:28px 64px;position:relative;min-height:100vh;overflow-x:hidden}
+.bubble{position:fixed;border-radius:50%;z-index:0;pointer-events:none}
+.b1{width:260px;height:260px;right:-110px;top:-110px;background:var(--peach-mid);opacity:.9}
+.b2{width:220px;height:220px;left:-120px;bottom:12%;background:var(--sage);opacity:.8}
+main{position:relative;z-index:1;max-width:560px;margin-inline:auto;display:flex;flex-direction:column;gap:24px}
+h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.18;margin:0;text-wrap:balance;color:var(--graphite)}
+h1{font-size:clamp(1.9rem,7.5vw,2.6rem);font-weight:800;letter-spacing:-.02em}
+h2{font-size:clamp(1.4rem,5.5vw,1.8rem);letter-spacing:-.01em}
+h3{font-size:1.1rem}
+p{margin:0}
+.eyebrow{font-family:var(--font-display);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--terracota-strong);font-weight:500;display:flex;align-items:center;gap:8px}
+.eyebrow::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--terracota);flex:none}
+.muted{color:var(--brown)}
+.quote{font-style:italic;color:var(--brown);border-left:4px solid var(--terracota);padding-left:14px}
+.btn{font-family:var(--font-display);font-size:1rem;font-weight:600;border:0;border-radius:999px;padding:15px 28px;background:var(--terracota-strong);color:var(--white);cursor:pointer;text-align:center;text-decoration:none;display:inline-block}
+.btn.ghost{background:transparent;color:var(--graphite);border:1.5px solid var(--line)}
+.btn:focus-visible,.scale button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--terracota-strong);outline-offset:2px}
+.progress{height:6px;border-radius:99px;background:var(--line);overflow:hidden}
+.progress i{display:block;height:100%;background:var(--terracota);border-radius:99px;transition:width .25s}
+.scale{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.scale button{font-family:var(--font-display);font-size:1.25rem;font-weight:500;height:68px;border-radius:18px;border:1.5px solid var(--line);background:var(--white);color:var(--graphite);cursor:pointer}
+.scale button:hover,.scale button.on{background:var(--terracota-strong);color:var(--white);border-color:var(--terracota-strong)}
+.ends{display:flex;justify-content:space-between;font-size:.9rem;color:var(--brown);margin-top:-12px}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+form{display:flex;flex-direction:column;gap:16px}
+label{display:flex;flex-direction:column;gap:6px;font-weight:700;font-size:.95rem}
+input,select{font:inherit;font-weight:400;padding:14px;border-radius:14px;border:1.5px solid var(--line);background:var(--white);color:var(--graphite);width:100%}
+.err{color:var(--low);font-size:.9rem;min-height:1.2em}
+.card{background:var(--white);border-radius:24px;padding:20px}
+.score{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.score b{font-family:var(--font-display);font-size:3.4rem;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+.pillar{padding-block:20px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:10px}
+.pillar header{display:flex;align-items:center;gap:12px}
+.pillar header h3{flex:1;min-width:0}
+.ico{width:44px;height:44px;border-radius:50%;background:var(--peach-mid);display:grid;place-items:center;flex:none}
+.ico svg{width:22px;height:22px;fill:none;stroke:var(--terracota-strong);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.tag{font-family:var(--font-display);font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;font-weight:600;padding:5px 11px;border-radius:99px;white-space:nowrap;background:var(--white)}
+.bar{height:6px;border-radius:99px;background:var(--line);overflow:hidden}
+.bar i{display:block;height:100%;border-radius:99px}
+.cta{background:var(--white);border-radius:28px;padding:28px;display:flex;flex-direction:column;gap:14px}
+svg text{fill:var(--graphite);font-family:var(--font-body);font-size:13px;font-weight:700}
+svg .ring{fill:none;stroke:var(--line);stroke-width:1}
+svg .axis{stroke:var(--line);stroke-width:1}
+svg .area{fill:var(--terracota);fill-opacity:.2;stroke:var(--terracota);stroke-width:2.5;stroke-linejoin:round}
+svg .dot{fill:var(--terracota-strong)}
+.lv-low{color:var(--low)}.lv-mid{color:var(--mid)}.lv-high{color:var(--high)}
+.bg-low{background:var(--low)}.bg-mid{background:var(--mid)}.bg-high{background:var(--high)}
+@media (prefers-reduced-motion:reduce){.progress i{transition:none}}
+</style>
+
+<div class="bubble b1"></div><div class="bubble b2"></div>
+<main id="app"></main>
+
+<script>
+/* ===== Configuração: ajuste aqui ===== */
+const CONFIG = {
+  brand: "Anna Saade Consultoria",
+  agenda: "https://calendar.app.google/ARUTGwo3NtqLU1D28",   // link de agendamento do Google Agenda
+  endpoint: ""       // URL que recebe os leads (Google Sheets/Apps Script, Zapier, Make...)
+};
+
+/* Ícones Lucide (traço 2px) */
+const ICONS = {
+  fin:'<path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/>',
+  rot:'<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>',
+  plan:'<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>',
+  proc:'<path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>',
+  auto:'<path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>'
+};
+const icon = id => `<span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[id]}</svg></span>`;
+
+const PILLARS = [
+  {id:"fin", short:"Financeiro", name:"Gestão financeira", qs:[
+    "Você separa o dinheiro do negócio do seu dinheiro pessoal?",
+    "Você sabe quanto sobra de lucro no fim do mês?",
+    "Você sabe o custo real de cada serviço (produtos, tempo, taxas)?",
+    "Você registra todas as entradas e saídas em um só lugar?",
+    "Você controla quem ainda não pagou e cobra dentro do prazo?",
+    "Você retira um valor fixo para você todo mês (pró-labore)?"],
+   txt:{
+    low:"Hoje o dinheiro entra, mas você não enxerga para onde ele vai. Sem separar as contas e sem saber o lucro, fica difícil precificar e crescer com segurança.",
+    mid:"Você já tem uma noção do financeiro, mas ainda faltam controle de custos, lucro real e cobrança padronizada. Isso costuma esconder dinheiro que já é seu.",
+    high:"Seu financeiro está organizado. O próximo passo é usar os números para decidir preço, metas e investimentos."},
+   step:"Separar as contas e registrar tudo em um só lugar por 30 dias."},
+  {id:"rot", short:"Rotina", name:"Gestão de rotina", qs:[
+    "Você tem horários definidos de trabalho e de descanso?",
+    "Sua agenda de atendimentos fica organizada em um único lugar?",
+    "Você reserva tempo na semana para gestão, e não só para atender?",
+    "Você consegue tirar um dia de folga sem o negócio parar?",
+    "Você começa a semana sabendo quais são suas prioridades?",
+    "Você termina o dia sem a sensação de ter esquecido algo importante?"],
+   txt:{
+    low:"A rotina está mandando em você, e não o contrário. Sem blocos definidos para atender e para gerir, o cansaço vira o custo escondido do negócio.",
+    mid:"Você tem alguns hábitos bons, mas eles ainda oscilam. Falta um ritmo semanal fixo que sustente o resto.",
+    high:"Sua rotina é sólida e sustenta o negócio. O ganho agora está em delegar ou automatizar o que ainda toma seu tempo."},
+   step:"Reservar 1 hora fixa por semana para planejar a semana seguinte."},
+  {id:"plan", short:"Planejamento", name:"Planejamento e metas", qs:[
+    "Você tem uma meta de faturamento definida para o mês?",
+    "Você sabe quanto precisa faturar para pagar todas as contas?",
+    "Você tem uma reserva para meses fracos (ao menos 1 mês de despesas)?",
+    "Você revisa seus números e metas pelo menos uma vez por mês?",
+    "Você planeja com antecedência as épocas de alta e baixa (datas, feriados, férias)?",
+    "Você tem clareza de onde quer estar com o negócio daqui a 12 meses?"],
+   txt:{
+    low:"Sem meta e sem ponto de equilíbrio, o mês vira uma surpresa. É aqui que mais se ganha clareza com pouco esforço.",
+    mid:"Você tem alguma direção, mas ela ainda não vira rotina de revisão. Metas que ninguém acompanha viram só intenção.",
+    high:"Você planeja e acompanha. Vale transformar o plano de 12 meses em metas trimestrais com responsáveis e datas."},
+   step:"Calcular seu ponto de equilíbrio e definir uma meta para o próximo mês."},
+  {id:"proc", short:"Processos", name:"Processos e padrões", qs:[
+    "Seus atendimentos seguem um passo a passo padrão?",
+    "Você tem um roteiro para o primeiro contato com novos clientes (perguntas, valores, condições)?",
+    "Suas regras de cancelamento, atraso e sinal estão claras e comunicadas?",
+    "Você usa checklists para preparar e encerrar atendimentos?",
+    "Você registra informações de cada cliente (histórico, preferências, ficha)?",
+    "Outra pessoa conseguiria assumir seu trabalho seguindo o que está documentado?"],
+   txt:{
+    low:"Quase tudo depende da sua memória e do improviso. Cada atendimento sai um pouco diferente, e o negócio não consegue crescer sem você.",
+    mid:"Você já tem partes padronizadas, mas outras ainda ficam no improviso. Documentar o essencial dá consistência e economiza tempo.",
+    high:"Seus processos estão definidos. O desafio agora é mantê-los atualizados e preparar o negócio para crescer ou delegar."},
+   step:"Escrever em 10 linhas o passo a passo do seu atendimento mais comum."},
+  {id:"auto", short:"Automação", name:"Automação", qs:[
+    "Confirmações e lembretes de horário são enviados automaticamente?",
+    "Você usa respostas prontas ou um assistente para as perguntas mais comuns?",
+    "O agendamento acontece sem uma troca longa de mensagens (link, app ou sistema)?",
+    "Cobranças e pagamentos (Pix, link, sinal) saem de forma automática ou padronizada?",
+    "Você usa alguma ferramenta para controlar finanças ou clientes (planilha, app, sistema)?",
+    "Você automatiza o pós-atendimento (agradecimento, pedido de avaliação, retorno)?"],
+   txt:{
+    low:"Muito do seu tempo vai para tarefas repetitivas que uma ferramenta simples faria sozinha. Automatizar vem depois de definir o processo, e é aí que o tempo volta.",
+    mid:"Você já automatiza algumas coisas, mas ainda faz à mão tarefas que poderiam rodar sozinhas, como lembretes, cobranças e retorno de clientes.",
+    high:"Boa parte da operação já roda sozinha. Vale revisar as ferramentas e integrar o que ainda está solto."},
+   step:"Ativar lembrete automático de horário para todos os atendimentos."}
+];
+
+/* Ordem de prioridade (também a ordem das perguntas e do radar) */
+const ORDER = ["fin","rot","plan","proc","auto"];
+PILLARS.sort((a,b)=>ORDER.indexOf(a.id)-ORDER.indexOf(b.id));
+
+const SEGMENTS = ["Manicure e nail designer","Sobrancelhas e estética facial","Salão de beleza","Fisioterapia","Aulas particulares ou yoga","Outro serviço individual"];
+const LV = {low:"Atenção prioritária", mid:"Em desenvolvimento", high:"Bem estruturado"};
+const level = p => p < 40 ? "low" : p < 70 ? "mid" : "high";
+
+const ALL = PILLARS.flatMap((p,pi)=>p.qs.map((q,qi)=>({pi,qi,q,pillar:p.short})));
+const S = {screen:"intro", i:0, answers:Array(ALL.length).fill(null), lead:null};
+const app = document.getElementById("app");
+const esc = s => String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+function render(){
+  window.scrollTo(0,0);
+  ({intro:intro,q:question,lead:leadForm,report:report})[S.screen]();
+}
+
+function intro(){
+  app.innerHTML = `
+    <p class="eyebrow">${esc(CONFIG.brand)}</p>
+    <h1>Descubra onde seu negócio perde tempo e dinheiro</h1>
+    <p class="quote">Menos improviso. Mais estratégia pro seu negócio.</p>
+    <p class="muted">${ALL.length} perguntas rápidas sobre finanças, rotina, planejamento, processos e automação. No final, você recebe um gráfico e um relatório com o que ajustar primeiro.</p>
+    <div class="row"><button class="btn" id="go">Começar o diagnóstico</button><span class="muted">Leva cerca de 5 minutos</span></div>`;
+  document.getElementById("go").onclick=()=>{S.screen="q";render()};
+}
+
+function question(){
+  const it = ALL[S.i], cur = S.answers[S.i];
+  const pct = Math.round(S.i/ALL.length*100);
+  app.innerHTML = `
+    <div class="progress" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100"><i style="width:${pct}%"></i></div>
+    <p class="eyebrow">${esc(it.pillar)} · Pergunta ${S.i+1} de ${ALL.length}</p>
+    <h2>${esc(it.q)}</h2>
+    <div class="scale">${[1,2,3,4,5].map(n=>`<button data-n="${n}" class="${cur===n?"on":""}" aria-label="Nota ${n}">${n}</button>`).join("")}</div>
+    <div class="ends"><span>Não</span><span>Sim, com certeza</span></div>
+    <div class="row">${S.i>0?'<button class="btn ghost" id="back">Voltar</button>':""}</div>`;
+  app.querySelectorAll(".scale button").forEach(b=>b.onclick=()=>answer(+b.dataset.n));
+  const back=document.getElementById("back"); if(back) back.onclick=()=>{S.i--;render()};
+}
+function answer(n){
+  S.answers[S.i]=n;
+  if(S.i<ALL.length-1){S.i++;render()} else {S.screen="lead";render()}
+}
+document.addEventListener("keydown",e=>{
+  if(S.screen==="q" && /^[1-5]$/.test(e.key) && !e.metaKey && !e.ctrlKey) answer(+e.key);
+});
+
+function leadForm(){
+  app.innerHTML = `
+    <div class="progress"><i style="width:100%"></i></div>
+    <p class="eyebrow">Diagnóstico concluído</p>
+    <h2>Seu relatório está pronto. Para onde enviamos?</h2>
+    <p class="muted">Preencha seus dados para ver o resultado agora e receber uma cópia.</p>
+    <form id="f" novalidate>
+      <label>Seu nome<input id="nome" autocomplete="given-name" required></label>
+      <label>E-mail<input id="email" type="email" autocomplete="email" inputmode="email" required></label>
+      <label>WhatsApp com DDD<input id="zap" type="tel" autocomplete="tel" inputmode="tel" placeholder="(68) 99999-9999" required></label>
+      <label>Qual é a sua área?<select id="seg">${SEGMENTS.map(s=>`<option>${esc(s)}</option>`).join("")}</select></label>
+      <p class="err" id="err" role="alert"></p>
+      <button class="btn" type="submit">Ver meu diagnóstico</button>
+    </form>`;
+  document.getElementById("f").onsubmit=ev=>{
+    ev.preventDefault();
+    const v=id=>document.getElementById(id).value.trim();
+    const nome=v("nome"), email=v("email"), zap=v("zap").replace(/\D/g,"");
+    const err=document.getElementById("err");
+    if(nome.length<2) return err.textContent="Digite seu nome.";
+    if(!/^\S+@\S+\.\S+$/.test(email)) return err.textContent="Digite um e-mail válido.";
+    if(zap.length<10||zap.length>13) return err.textContent="Digite o WhatsApp com DDD.";
+    S.lead={nome,email,whatsapp:zap,area:v("seg")};
+    sendLead();
+    S.screen="report";render();
+  };
+}
+
+function scores(){
+  return PILLARS.map((p,pi)=>{
+    const a=S.answers.slice(pi*6,pi*6+6);
+    const avg=a.reduce((x,y)=>x+y,0)/a.length;
+    return Math.round((avg-1)/4*100);
+  });
+}
+function sendLead(){
+  if(!CONFIG.endpoint) return;
+  const sc=scores();
+  /* Campos simples (formulário), fáceis de mapear no Make/Zapier */
+  const flat=s=>s.normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase();
+  const body=new URLSearchParams({
+    nome:S.lead.nome, email:S.lead.email, whatsapp:S.lead.whatsapp, area:S.lead.area,
+    geral:String(Math.round(sc.reduce((a,b)=>a+b,0)/sc.length)),
+    data:new Date().toISOString(), respostas:S.answers.join(",")});
+  PILLARS.forEach((p,i)=>body.set(flat(p.short),String(sc[i])));
+  try{fetch(CONFIG.endpoint,{method:"POST",mode:"no-cors",body}).catch(()=>{})}catch(e){}
+}
+
+function radar(sc){
+  const W=360,H=330,cx=180,cy=165,R=105,n=PILLARS.length;
+  const pt=(i,r)=>{const a=(-90+i*360/n)*Math.PI/180;return [cx+r*Math.cos(a),cy+r*Math.sin(a)]};
+  const poly=r=>PILLARS.map((_,i)=>pt(i,r).map(x=>x.toFixed(1)).join(",")).join(" ");
+  const rings=[.2,.4,.6,.8,1].map(f=>`<polygon class="ring" points="${poly(R*f)}"/>`).join("");
+  const axes=PILLARS.map((_,i)=>{const [x,y]=pt(i,R);return `<line class="axis" x1="${cx}" y1="${cy}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}"/>`}).join("");
+  const data=sc.map((s,i)=>pt(i,R*Math.max(s,4)/100));
+  const area=`<polygon class="area" points="${data.map(p=>p.map(x=>x.toFixed(1)).join(",")).join(" ")}"/>`;
+  const dots=data.map(p=>`<circle class="dot" cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="4.5"/>`).join("");
+  const labels=PILLARS.map((p,i)=>{
+    const [x,y]=pt(i,R+26); const anchor=Math.abs(x-cx)<8?"middle":x>cx?"start":"end";
+    const dy=y<cy-R*.5?-2:y>cy+R*.5?14:5;
+    return `<text x="${x.toFixed(1)}" y="${(y+dy).toFixed(1)}" text-anchor="${anchor}">${esc(p.short)}</text>`}).join("");
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Gráfico de radar com a pontuação nos 5 pilares" width="100%">${rings}${axes}${area}${dots}${labels}</svg>`;
+}
+
+function report(){
+  const sc=scores(), total=Math.round(sc.reduce((a,b)=>a+b,0)/sc.length);
+  const first=S.lead.nome.split(/\s+/)[0];
+  /* Prioridade: segue a ordem fixa dos pilares entre os que estão abaixo de 70%.
+     Se sobrarem menos de 2, completa com os de menor nota. */
+  const weak=sc.map((s,i)=>i).filter(i=>sc[i]<70);
+  const rest=sc.map((s,i)=>i).filter(i=>sc[i]>=70).sort((a,b)=>sc[a]-sc[b]);
+  const prio=[...weak,...rest].slice(0,2).map(i=>PILLARS[i]);
+  const href=CONFIG.agenda;
+  app.innerHTML = `
+    <p class="eyebrow">Seu diagnóstico</p>
+    <h1>${esc(first)}, aqui está o retrato do seu negócio</h1>
+    <div class="score"><b class="lv-${level(total)}">${total}%</b><span class="muted">de estrutura geral · ${LV[level(total)].toLowerCase()}</span></div>
+    <div class="card">${radar(sc)}</div>
+    <div>
+      <h2>Por onde começar</h2>
+      <p class="muted" style="margin-top:8px">Estes dois pilares são a base para os demais: ajustados primeiro, devolvem tempo e dinheiro mais rápido.</p>
+      ${prio.map(p=>`<div class="pillar"><header>${icon(p.id)}<h3>${esc(p.name)}</h3></header><p><b>Primeiro passo:</b> ${esc(p.step)}</p></div>`).join("")}
+    </div>
+    <div>
+      <h2>Pilar por pilar</h2>
+      ${PILLARS.map((p,i)=>{const l=level(sc[i]);return `
+      <section class="pillar">
+        <header>${icon(p.id)}<h3>${esc(p.name)}</h3><span class="tag lv-${l}">${LV[l]}</span></header>
+        <div class="bar" aria-hidden="true"><i class="bg-${l}" style="width:${Math.max(sc[i],3)}%"></i></div>
+        <p class="muted"><b>${sc[i]}%</b> · ${esc(p.txt[l])}</p>
+      </section>`}).join("")}
+    </div>
+    <div class="cta">
+      <p class="eyebrow">Do caos à clareza</p>
+      <h2>Vamos transformar isso em um plano?</h2>
+      <p>Na sessão estratégica de 30 minutos você entende o que está por trás do seu resultado em ${esc(prio[0].name.toLowerCase())} e ${esc(prio[1].name.toLowerCase())}, e conhece a minha consultoria, que resolve isso com acompanhamento.</p>
+      <a class="btn" href="${href}" target="_blank" rel="noopener">Agendar minha sessão estratégica</a>
+    </div>`;
+}
+render();
+</script>
