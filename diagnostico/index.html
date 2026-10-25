@@ -49,6 +49,11 @@ form{display:flex;flex-direction:column;gap:16px}
 label{display:flex;flex-direction:column;gap:6px;font-weight:700;font-size:.95rem}
 input,select{font:inherit;font-weight:400;padding:14px;border-radius:14px;border:1.5px solid var(--line);background:var(--white);color:var(--graphite);width:100%}
 .err{color:var(--low);font-size:.9rem;min-height:1.2em}
+body.soft{background:linear-gradient(180deg,#FFFBF7 0%,#FEF6EE 100%) fixed}
+body.soft .bubble{opacity:.35}
+.score-note{margin-top:6px}
+.step{background:var(--peach);border-radius:14px;padding:12px 14px;margin-top:2px}
+.prio-flag{font-family:var(--font-display);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:var(--terracota-strong)}
 .card{background:var(--white);border-radius:24px;padding:20px}
 .score{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
 .score b{font-family:var(--font-display);font-size:3.4rem;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
@@ -61,7 +66,7 @@ input,select{font:inherit;font-weight:400;padding:14px;border-radius:14px;border
 .bar{height:6px;border-radius:99px;background:var(--line);overflow:hidden}
 .bar i{display:block;height:100%;border-radius:99px}
 .cta{background:var(--white);border-radius:28px;padding:28px;display:flex;flex-direction:column;gap:14px}
-svg text{fill:var(--graphite);font-family:var(--font-body);font-size:13px;font-weight:700}
+svg text{fill:var(--graphite);font-family:var(--font-body);font-size:17px;font-weight:700}
 svg .ring{fill:none;stroke:var(--line);stroke-width:1}
 svg .axis{stroke:var(--line);stroke-width:1}
 svg .area{fill:var(--terracota);fill-opacity:.2;stroke:var(--terracota);stroke-width:2.5;stroke-linejoin:round}
@@ -253,7 +258,7 @@ function sendLead(){
 }
 
 function radar(sc){
-  const W=360,H=330,cx=180,cy=165,R=105,n=PILLARS.length;
+  const W=460,H=330,cx=230,cy=165,R=105,n=PILLARS.length;
   const pt=(i,r)=>{const a=(-90+i*360/n)*Math.PI/180;return [cx+r*Math.cos(a),cy+r*Math.sin(a)]};
   const poly=r=>PILLARS.map((_,i)=>pt(i,r).map(x=>x.toFixed(1)).join(",")).join(" ");
   const rings=[.2,.4,.6,.8,1].map(f=>`<polygon class="ring" points="${poly(R*f)}"/>`).join("");
@@ -277,23 +282,22 @@ function report(){
   const rest=sc.map((s,i)=>i).filter(i=>sc[i]>=70).sort((a,b)=>sc[a]-sc[b]);
   const prio=[...weak,...rest].slice(0,2).map(i=>PILLARS[i]);
   const href=CONFIG.agenda;
+  document.body.classList.add('soft');
+  const NOTE={low:'Há pontos importantes pedindo atenção agora.',mid:'Você já tem uma base, mas ainda há partes soltas no dia a dia.',high:'Seu negócio está bem organizado, com poucos pontos a refinar.'};
   app.innerHTML = `
     <p class="eyebrow">Seu diagnóstico</p>
     <h1>${esc(first)}, aqui está o retrato do seu negócio</h1>
-    <div class="score"><b class="lv-${level(total)}">${total}%</b><span class="muted">de estrutura geral · ${LV[level(total)].toLowerCase()}</span></div>
+    <div class="score"><b class="lv-${level(total)}">${total}%</b><span class="muted" style="flex:1;min-width:230px"><strong>Nota geral de organização</strong> do seu negócio, de 0 a 100%. Quanto mais perto de 100%, mais organizado ele está. ${NOTE[level(total)]}</span></div>
     <div class="card">${radar(sc)}</div>
     <div>
-      <h2>Por onde começar</h2>
-      <p class="muted" style="margin-top:8px">Estes dois pilares são a base para os demais: ajustados primeiro, devolvem tempo e dinheiro mais rápido.</p>
-      ${prio.map(p=>`<div class="pillar"><header>${icon(p.id)}<h3>${esc(p.name)}</h3></header><p><b>Primeiro passo:</b> ${esc(p.step)}</p></div>`).join("")}
-    </div>
-    <div>
       <h2>Pilar por pilar</h2>
+      <p class="muted" style="margin-top:8px">Veja como está cada área. Nas duas marcadas como prioridade, você encontra o primeiro passo para começar.</p>
       ${PILLARS.map((p,i)=>{const l=level(sc[i]);return `
       <section class="pillar">
         <header>${icon(p.id)}<h3>${esc(p.name)}</h3><span class="tag lv-${l}">${LV[l]}</span></header>
         <div class="bar" aria-hidden="true"><i class="bg-${l}" style="width:${Math.max(sc[i],3)}%"></i></div>
         <p class="muted"><b>${sc[i]}%</b> · ${esc(p.txt[l])}</p>
+        ${prio.includes(p)?`<div class="step"><span class="prio-flag">Prioridade ${prio.indexOf(p)+1} · por onde começar</span><p><b>Primeiro passo:</b> ${esc(p.step)}</p></div>`:""}
       </section>`}).join("")}
     </div>
     <div class="cta">
