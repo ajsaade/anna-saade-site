@@ -54,6 +54,12 @@ body.soft .bubble{opacity:.35}
 .score-note{max-width:420px;font-size:.98rem}
 .step{background:var(--peach);border-radius:14px;padding:12px 14px;margin-top:2px}
 .prio-flag{font-family:var(--font-display);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:var(--terracota-strong)}
+.types{display:flex;flex-direction:column;gap:12px}
+.type{font-family:var(--font-body);text-align:left;background:var(--white);border:1.5px solid var(--line);border-radius:20px;padding:18px 20px;cursor:pointer;display:flex;flex-direction:column;gap:4px;color:var(--graphite)}
+.type strong{font-family:var(--font-display);font-size:1.1rem;font-weight:700}
+.type span{font-size:1rem}
+.type em{font-style:normal;font-size:.9rem;color:var(--brown)}
+.type:hover,.type:focus-visible{border-color:var(--terracota);outline:none}
 .card{background:var(--white);border-radius:24px;padding:20px}
 .score{background:var(--white);border-radius:24px;padding:24px 20px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;box-shadow:0 1px 0 var(--line)}
 .score-label{font-family:var(--font-display);font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;font-weight:600;color:var(--brown)}
@@ -94,11 +100,15 @@ const ICONS = {
   rot:'<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>',
   plan:'<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>',
   proc:'<path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>',
+  est:'<path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><path d="m3.29 7 8.71 5 8.71-5"/>',
+  ven:'<path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/>',
+  prod:'<path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/><path d="M17 18h1"/><path d="M12 18h1"/><path d="M7 18h1"/>',
+  ins:'<path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><path d="m3.29 7 8.71 5 8.71-5"/>',
   auto:'<path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>'
 };
 const icon = id => `<span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[id]}</svg></span>`;
 
-const PILLARS = [
+const SERV = [
   {id:"fin", short:"Financeiro", name:"Gestão financeira", qs:[
     "Você separa o dinheiro do negócio do seu dinheiro pessoal?",
     "Você sabe quanto sobra de lucro no fim do mês?",
@@ -160,33 +170,195 @@ const PILLARS = [
     high:"Boa parte da operação já roda sozinha. Vale revisar as ferramentas e integrar o que ainda está solto."},
    step:"Ativar lembrete automático de horário para todos os atendimentos."}
 ];
+const LOJA = [
+  {id:"fin", short:"Financeiro", name:"Gestão financeira", qs:[
+    "Você separa o dinheiro da loja do seu dinheiro pessoal?",
+    "Você sabe a margem de lucro de cada produto, depois de custo, taxas e impostos?",
+    "Você sabe quanto sobra de lucro no fim do mês, e não só quanto vendeu?",
+    "Você acompanha o que entra e o que sai da loja todos os dias ou semanas, em um só lugar?",
+    "Você controla contas a pagar e a receber (cartão parcelado, fiado, fornecedores) para não ser pega de surpresa?"],
+   txt:{
+    low:"Hoje o dinheiro entra, mas você não enxerga para onde ele vai. Sem saber a margem de cada produto e o lucro do mês, é fácil vender muito e ficar sem caixa.",
+    mid:"Você já tem uma noção do financeiro, mas ainda faltam margem por produto, lucro real e controle do que vence. Isso costuma esconder dinheiro que já é seu.",
+    high:"Seu financeiro está organizado. O próximo passo é usar os números para decidir preço, compras e investimentos."},
+   step:"Separar as contas da loja e registrar tudo o que entra e sai em um só lugar por 30 dias."},
+  {id:"est", short:"Estoque", name:"Estoque e compras", qs:[
+    "Você sabe quais produtos mais vendem e quais estão parados há meses?",
+    "O seu controle de estoque bate com o que realmente está na prateleira?",
+    "Você decide quanto comprar com base nas vendas anteriores, e não no achismo?",
+    "Você sabe quanto dinheiro está parado em produto no estoque?",
+    "Você tem uma estratégia para girar mercadoria parada (promoção, kit, liquidação)?"],
+   txt:{
+    low:"Hoje o dinheiro da loja está preso em mercadoria que não gira, e você compra mais sem saber se precisa. É aqui que mais se perde caixa sem perceber.",
+    mid:"Você tem alguma noção do estoque, mas ainda falta um controle que mostre o que gira e o que está parado. Isso costuma prender dinheiro que poderia voltar para o caixa.",
+    high:"Seu estoque está sob controle. O próximo passo é usar os dados para comprar melhor, negociar com fornecedor e girar mais rápido."},
+   step:"Listar os 10 produtos que mais vendem e os 10 mais parados, e definir uma ação para os parados."},
+  {id:"rot", short:"Equipe", name:"Equipe e rotina", qs:[
+    "A loja abre, funciona e fecha com uma rotina definida, mesmo quando você não está?",
+    "Cada pessoa da equipe sabe exatamente o que é responsabilidade dela?",
+    "Você consegue tirar um dia de folga sem a loja parar ou perder venda?",
+    "Existe um passo a passo de abertura, fechamento e atendimento que a equipe segue?",
+    "Você reserva tempo na semana para gerir a loja, e não só para atender e vender?"],
+   txt:{
+    low:"A loja depende de você para tudo funcionar. Sem rotina e sem responsabilidades claras, o cansaço vira o custo escondido do negócio.",
+    mid:"Você tem alguns hábitos e combinados, mas eles ainda dependem da sua presença para funcionar. Falta um ritmo fixo que sustente a loja.",
+    high:"Sua loja funciona com rotina e responsabilidades claras. O ganho agora está em treinar e delegar mais, para você focar no crescimento."},
+   step:"Escrever as 5 tarefas que só você faz hoje e escolher uma para delegar esta semana."},
+  {id:"plan", short:"Planejamento", name:"Planejamento e metas", qs:[
+    "Você tem uma meta de vendas definida para o mês?",
+    "Você sabe quanto precisa vender por mês para pagar todas as contas da loja?",
+    "Você planeja com antecedência as datas fortes (Dia das Mães, Black Friday, Natal) e os meses fracos?",
+    "Você tem uma reserva para meses de venda baixa?",
+    "Você revisa os números e as metas da loja pelo menos uma vez por mês?"],
+   txt:{
+    low:"Sem meta e sem saber quanto precisa vender, o mês vira uma surpresa. É aqui que mais se ganha clareza com pouco esforço.",
+    mid:"Você tem alguma direção, mas ela ainda não vira rotina de revisão. Meta que ninguém acompanha vira só intenção.",
+    high:"Você planeja e acompanha. Vale transformar o plano do ano em metas trimestrais com responsáveis e datas."},
+   step:"Calcular quanto a loja precisa vender para pagar as contas e definir a meta do próximo mês."},
+  {id:"ven", short:"Vendas", name:"Vendas e clientes", qs:[
+    "Você sabe quantos clientes entram na loja e quantos de fato compram?",
+    "A equipe segue um jeito padrão de receber, atender e fechar a venda?",
+    "Você guarda os dados dos clientes (nome, WhatsApp, o que compraram) em um só lugar?",
+    "Você chama de volta quem já comprou (novidades, aniversário, reposição)?",
+    "Você sabe quanto, em média, cada cliente gasta por compra e com que frequência volta?"],
+   txt:{
+    low:"Você vende, mas sem enxergar de onde vem a venda nem como fazer o cliente voltar. Cada atendimento sai de um jeito e a loja depende do movimento do dia.",
+    mid:"Você já tem partes do processo de venda, mas ainda perde cliente por falta de padrão e de contato depois da compra.",
+    high:"Seu processo de vendas está definido. O desafio agora é medir e repetir o que funciona, para vender mais para quem já conhece a loja."},
+   step:"Anotar nome e WhatsApp de todo cliente que compra e chamar de volta quem comprou há mais de 30 dias."},
+  {id:"auto", short:"Automação", name:"Automação", qs:[
+    "Você usa um sistema ou app para controlar vendas e estoque, em vez de caderno ou planilha solta?",
+    "As perguntas mais comuns (preço, tamanho, horário) são respondidas com mensagens prontas ou de forma automática?",
+    "Você envia mensagens para clientes (promoções, chegada de novidade) por lista de transmissão ou ferramenta?",
+    "A conferência de pagamentos (Pix, cartão, link) acontece de forma automática?",
+    "Você acompanha as vendas por relatórios prontos, em vez de montar tudo à mão?"],
+   txt:{
+    low:"Muito do seu tempo vai para tarefas repetitivas que uma ferramenta simples faria sozinha. Automatizar vem depois de definir o processo, e é aí que o tempo volta.",
+    mid:"Você já automatiza algumas coisas, mas ainda faz à mão tarefas que poderiam rodar sozinhas, como respostas, mensagens e relatórios.",
+    high:"Boa parte da operação já roda sozinha. Vale revisar as ferramentas e integrar o que ainda está solto."},
+   step:"Ativar mensagens prontas no WhatsApp Business para as 5 perguntas mais comuns dos clientes."}
+];
+const PROD = [
+  {id:"fin", short:"Financeiro", name:"Gestão financeira", qs:[
+    "Você separa o dinheiro do negócio do seu dinheiro pessoal?",
+    "Você sabe o custo real de cada produto (ingredientes ou material, embalagem, gás, energia)?",
+    "Você sabe quanto sobra de lucro em cada produto e no fim do mês?",
+    "Você coloca o seu tempo de trabalho no preço, ou só se paga com o que sobra?",
+    "Você registra o que entra e o que sai em um só lugar e controla o que ainda vai receber?"],
+   txt:{
+    low:"Hoje você produz e vende, mas não enxerga o custo real nem o lucro de cada produto. Sem isso, é fácil trabalhar muito e ficar sem sobra.",
+    mid:"Você já tem uma noção dos custos, mas ainda faltam lucro por produto e o valor do seu tempo no preço. Isso costuma esconder dinheiro que já é seu.",
+    high:"Seu financeiro está organizado. O próximo passo é usar os números para decidir preço, compras e investimentos."},
+   step:"Calcular o custo real do seu produto mais vendido, incluindo embalagem, gás e o seu tempo."},
+  {id:"ins", short:"Insumos", name:"Insumos e compras", qs:[
+    "Você sabe quanto gasta por mês em cada insumo e quanto custa cada um?",
+    "Você compra de acordo com o que vai produzir, e não só quando acaba?",
+    "Você tem mais de um fornecedor para os itens principais e compara preços?",
+    "Você controla validade, perdas e desperdícios?",
+    "Você mantém um estoque mínimo de insumos para não parar a produção de última hora?"],
+   txt:{
+    low:"Você compra no improviso e descobre que faltou ou sobrou na hora de produzir. Perda e correria de última hora saem do seu lucro sem você perceber.",
+    mid:"Você tem alguma noção das compras, mas ainda falta controle de consumo, perdas e fornecedores. Isso costuma pesar no custo de cada produto.",
+    high:"Suas compras estão sob controle. O próximo passo é negociar melhor e usar o histórico para comprar na quantidade certa."},
+   step:"Anotar por 2 semanas tudo o que você compra e tudo o que perde ou joga fora."},
+  {id:"prod", short:"Produção", name:"Produção e capacidade", qs:[
+    "Você tem receita ou ficha padrão para cada produto, com medidas e passo a passo?",
+    "Cada produto sai com a mesma qualidade, independente de quem produz ou do dia?",
+    "Você sabe quantas unidades consegue produzir por dia ou por semana sem se sobrecarregar?",
+    "Você organiza a produção com antecedência (o que fazer, quando e em qual ordem)?",
+    "Outra pessoa conseguiria produzir seguindo o que está documentado?"],
+   txt:{
+    low:"A produção depende da sua memória e do seu ritmo. Sem padrão e sem saber a sua capacidade, qualquer pedido a mais vira sufoco.",
+    mid:"Você já tem partes padronizadas, mas ainda improvisa em outras. Documentar o essencial dá consistência e libera o seu tempo.",
+    high:"Sua produção está padronizada. O desafio agora é aumentar a capacidade ou delegar sem perder a qualidade."},
+   step:"Escrever a receita ou o passo a passo do seu produto mais vendido, com medidas e tempos."},
+  {id:"plan", short:"Planejamento", name:"Planejamento e metas", qs:[
+    "Você tem uma meta de faturamento definida para o mês?",
+    "Você sabe quanto precisa vender por mês para pagar todas as contas e se pagar?",
+    "Você planeja com antecedência as datas fortes (Páscoa, Natal, Dia das Mães) e os meses fracos?",
+    "Você tem uma reserva para meses de venda baixa?",
+    "Você revisa os números e as metas do negócio pelo menos uma vez por mês?"],
+   txt:{
+    low:"Sem meta e sem saber quanto precisa vender, o mês vira uma surpresa. É aqui que mais se ganha clareza com pouco esforço.",
+    mid:"Você tem alguma direção, mas ela ainda não vira rotina de revisão. Meta que ninguém acompanha vira só intenção.",
+    high:"Você planeja e acompanha. Vale transformar o plano do ano em metas trimestrais com responsáveis e datas."},
+   step:"Calcular quanto você precisa vender para pagar as contas e definir a meta do próximo mês."},
+  {id:"ven", short:"Vendas", name:"Vendas e encomendas", qs:[
+    "Você tem um jeito padrão de receber e fechar encomendas (prazo, valor, sinal, o que está incluso)?",
+    "Suas regras de prazo, alteração e cancelamento estão claras e comunicadas ao cliente?",
+    "Você guarda os dados dos clientes e o histórico do que cada um já pediu?",
+    "Você chama de volta quem já comprou (novidades, datas especiais, reposição)?",
+    "Você sabe de onde vêm os seus pedidos (indicação, Instagram, WhatsApp) e qual canal traz mais?"],
+   txt:{
+    low:"Cada venda e cada encomenda sai de um jeito, e o cliente muitas vezes nem sabe prazo e regras. Isso gera retrabalho, atraso e pedido perdido.",
+    mid:"Você já tem partes do processo de venda, mas ainda perde pedido por falta de padrão e de contato depois da compra.",
+    high:"Seu processo de vendas está definido. O desafio agora é medir os canais e repetir o que mais traz pedido."},
+   step:"Escrever em 5 linhas o passo a passo para fechar uma encomenda: prazo, valor, sinal e regras."},
+  {id:"auto", short:"Automação", name:"Automação", qs:[
+    "Você usa um sistema, app ou planilha para controlar pedidos, produção e estoque?",
+    "As perguntas mais comuns (cardápio, preço, prazo) são respondidas com mensagens prontas?",
+    "A confirmação do pedido, o sinal e a entrega seguem um aviso padronizado ou automático?",
+    "As cobranças e os pagamentos (Pix, link, sinal) saem de forma padronizada, com conferência?",
+    "Você acompanha vendas e custos por relatórios prontos, em vez de montar tudo à mão?"],
+   txt:{
+    low:"Muito do seu tempo vai para tarefas repetitivas que uma ferramenta simples faria sozinha. Automatizar vem depois de definir o processo, e é aí que o tempo volta.",
+    mid:"Você já automatiza algumas coisas, mas ainda faz à mão tarefas que poderiam rodar sozinhas, como respostas, avisos e relatórios.",
+    high:"Boa parte da operação já roda sozinha. Vale revisar as ferramentas e integrar o que ainda está solto."},
+   step:"Ativar mensagens prontas no WhatsApp Business para as 5 perguntas mais comuns dos clientes."}
+];
 
-/* Ordem de prioridade (também a ordem das perguntas e do radar) */
-const ORDER = ["fin","rot","plan","proc","auto"];
-PILLARS.sort((a,b)=>ORDER.indexOf(a.id)-ORDER.indexOf(b.id));
-
-const SEGMENTS = ["Manicure e nail designer","Sobrancelhas e estética facial","Salão de beleza","Fisioterapia","Aulas particulares ou yoga","Outro serviço individual"];
+/* Tipos de negócio: cada um tem suas áreas (ordem de prioridade = ordem das perguntas e do radar) */
+const TYPES = {
+  servico:{label:"Serviços", title:"Presto serviços", desc:"Atendo clientes com o meu tempo e o meu conhecimento.", ex:"Manicure, sobrancelhas, salão, fisioterapia, aulas, yoga, estética",
+    pillars:SERV, order:["fin","rot","plan","proc","auto"],
+    segments:["Manicure e nail designer","Sobrancelhas e estética facial","Salão de beleza","Fisioterapia","Aulas particulares ou yoga","Outro serviço individual"]},
+  loja:{label:"Venda de produtos", title:"Vendo produtos", desc:"Compro ou revendo produtos para o cliente final.", ex:"Loja de roupas, calçados, cosméticos, casa e decoração, presentes",
+    pillars:LOJA, order:["fin","est","rot","plan","ven","auto"],
+    segments:["Loja de roupas e moda","Calçados e acessórios","Cosméticos, perfumaria e beleza","Casa e decoração","Papelaria, presentes e variedades","Outro tipo de loja"]},
+  producao:{label:"Produção", title:"Produzo o que vendo", desc:"Eu mesma faço o produto que entrego ao cliente.", ex:"Confeitaria, marmitas, artesanato, costura, velas e cosméticos artesanais",
+    pillars:PROD, order:["fin","ins","prod","plan","ven","auto"],
+    segments:["Confeitaria e padaria","Alimentos e marmitas","Moda, costura e ateliê","Artesanato e personalizados","Cosméticos e velas artesanais","Outro tipo de produção"]}
+};
+let PILLARS=[], ALL=[];
+function setType(t){
+  S.type=t;
+  const T=TYPES[t];
+  PILLARS=[...T.pillars].sort((a,b)=>T.order.indexOf(a.id)-T.order.indexOf(b.id));
+  ALL=PILLARS.flatMap((p,pi)=>p.qs.map((q,qi)=>({pi,qi,q,pillar:p.short})));
+  S.answers=Array(ALL.length).fill(null); S.i=0;
+}
 const LV = {low:"Atenção prioritária", mid:"Em desenvolvimento", high:"Bem estruturado"};
 const level = p => p < 40 ? "low" : p < 70 ? "mid" : "high";
 
-const ALL = PILLARS.flatMap((p,pi)=>p.qs.map((q,qi)=>({pi,qi,q,pillar:p.short})));
-const S = {screen:"intro", i:0, answers:Array(ALL.length).fill(null), lead:null};
+const S = {screen:"intro", type:null, i:0, answers:[], lead:null};
 const app = document.getElementById("app");
 const esc = s => String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 
 function render(){
   window.scrollTo(0,0);
-  ({intro:intro,q:question,lead:leadForm,report:report})[S.screen]();
+  ({intro:intro,type:typeScreen,q:question,lead:leadForm,report:report})[S.screen]();
 }
 
 function intro(){
   app.innerHTML = `
     <p class="eyebrow">${esc(CONFIG.brand)}</p>
-    <h1>Descubra onde seu negócio perde tempo e dinheiro</h1>
+    <h1>Descubra onde o seu negócio perde dinheiro e tempo</h1>
     <p class="quote">Menos improviso. Mais estratégia pro seu negócio.</p>
-    <p class="muted">${ALL.length} perguntas rápidas sobre finanças, rotina, planejamento, processos e automação. No final, você recebe um gráfico e um relatório com o que ajustar primeiro.</p>
+    <p class="muted">30 perguntas rápidas sobre as áreas que mais pesam no seu negócio: finanças, rotina, planejamento, vendas e automação. No final, você recebe um gráfico e um relatório com o que ajustar primeiro.</p>
     <div class="row"><button class="btn" id="go">Começar o diagnóstico</button><span class="muted">Leva cerca de 5 minutos</span></div>`;
-  document.getElementById("go").onclick=()=>{S.screen="q";render()};
+  document.getElementById("go").onclick=()=>{S.screen="type";render()};
+}
+
+function typeScreen(){
+  app.innerHTML = `
+    <p class="eyebrow">Antes de começar</p>
+    <h2>Qual frase descreve melhor o seu negócio?</h2>
+    <p class="muted">Assim eu faço as perguntas certas para o seu tipo de trabalho.</p>
+    <div class="types">${Object.entries(TYPES).map(([k,t])=>`
+      <button class="type" data-t="${k}"><strong>${esc(t.title)}</strong><span>${esc(t.desc)}</span><em>${esc(t.ex)}</em></button>`).join("")}</div>
+    <div class="row"><button class="btn ghost" id="back">Voltar</button></div>`;
+  app.querySelectorAll(".type").forEach(b=>b.onclick=()=>{setType(b.dataset.t);S.screen="q";render()});
+  document.getElementById("back").onclick=()=>{S.screen="intro";render()};
 }
 
 function question(){
@@ -198,9 +370,9 @@ function question(){
     <h2>${esc(it.q)}</h2>
     <div class="scale">${[1,2,3,4,5].map(n=>`<button data-n="${n}" class="${cur===n?"on":""}" aria-label="Nota ${n}">${n}</button>`).join("")}</div>
     <div class="ends"><span>Não</span><span>Sim, com certeza</span></div>
-    <div class="row">${S.i>0?'<button class="btn ghost" id="back">Voltar</button>':""}</div>`;
+    <div class="row"><button class="btn ghost" id="back">Voltar</button></div>`;
   app.querySelectorAll(".scale button").forEach(b=>b.onclick=()=>answer(+b.dataset.n));
-  const back=document.getElementById("back"); if(back) back.onclick=()=>{S.i--;render()};
+  const back=document.getElementById("back"); if(back) back.onclick=()=>{if(S.i>0){S.i--}else{S.screen="type"}render()};
 }
 function answer(n){
   S.answers[S.i]=n;
@@ -220,7 +392,7 @@ function leadForm(){
       <label>Seu nome<input id="nome" autocomplete="given-name" required></label>
       <label>E-mail<input id="email" type="email" autocomplete="email" inputmode="email" required></label>
       <label>WhatsApp com DDD<input id="zap" type="tel" autocomplete="tel" inputmode="tel" placeholder="(68) 99999-9999" required></label>
-      <label>Qual é a sua área?<select id="seg">${SEGMENTS.map(s=>`<option>${esc(s)}</option>`).join("")}</select></label>
+      <label>Qual é a sua área?<select id="seg">${TYPES[S.type].segments.map(s=>`<option>${esc(s)}</option>`).join("")}</select></label>
       <p class="err" id="err" role="alert"></p>
       <button class="btn" type="submit">Ver meu diagnóstico</button>
     </form>`;
@@ -239,8 +411,9 @@ function leadForm(){
 }
 
 function scores(){
-  return PILLARS.map((p,pi)=>{
-    const a=S.answers.slice(pi*6,pi*6+6);
+  let off=0;
+  return PILLARS.map(p=>{
+    const n=p.qs.length, a=S.answers.slice(off,off+n); off+=n;
     const avg=a.reduce((x,y)=>x+y,0)/a.length;
     return Math.round((avg-1)/4*100);
   });
@@ -253,7 +426,7 @@ function sendLead(){
   const body=new URLSearchParams({
     nome:S.lead.nome, email:S.lead.email, whatsapp:S.lead.whatsapp, area:S.lead.area,
     geral:String(Math.round(sc.reduce((a,b)=>a+b,0)/sc.length)),
-    data:new Date().toISOString(), respostas:S.answers.join(",")});
+    tipo:TYPES[S.type].label,data:new Date().toISOString(), respostas:S.answers.join(",")});
   PILLARS.forEach((p,i)=>body.set(flat(p.short),String(sc[i])));
   try{fetch(CONFIG.endpoint,{method:"POST",mode:"no-cors",body}).catch(()=>{})}catch(e){}
 }
